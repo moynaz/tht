@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>微光·同行 | 教师匿名守护行动 (安全绑定版)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #eef5e8;
+            font-family: 'Segoe UI', '微软雅黑', '宋体', Roboto, system-ui, sans-serif;
+            padding: 24px 16px 48px;
+            color: #1f3b2c;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .hero {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .hero h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #2b6e3c, #4e9f6e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+        .hero .sub {
+            color: #5c7c64;
+            font-size: 1rem;
+            border-top: 1px solid #cde2d0;
+            display: inline-block;
+            padding-top: 8px;
+        }
+        .tagline {
+            background: #fff6e5;
+            border-radius: 60px;
+            display: inline-block;
+            padding: 6px 18px;
+            font-size: 0.85rem;
+            color: #b6682c;
+            margin-top: 12px;
+        }
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+            margin-top: 20px;
+        }
+        .card {
+            flex: 1;
+            min-width: 280px;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 12px 28px rgba(0, 32, 8, 0.08);
+            padding: 24px 20px;
+            border: 1px solid #ddebe0;
+        }
+        .card h2 {
+            font-size: 1.6rem;
+            font-weight: 500;
+            border-left: 6px solid #5aa97b;
+            padding-left: 16px;
+            margin-bottom: 20px;
+            color: #235b36;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+            color: #2d5a3e;
+            font-size: 0.9rem;
+        }
+        select, input, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 1rem;
+            border: 1px solid #cbdcd0;
+            border-radius: 28px;
+            background: #fefef7;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: #5aa97b;
+            box-shadow: 0 0 0 3px rgba(90,169,123,0.2);
+        }
+        button {
+            background: #3d8b5b;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 1rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        button.secondary {
+            background: #e9e6d7;
+            color: #3d6b4a;
+            border: 1px solid #c0d6c4;
+            box-shadow: none;
+        }
+        button.secondary:hover {
+            background: #e0dbc7;
+        }
+        button:hover {
+            background: #2c6e48;
+            transform: translateY(-1px);
+        }
+        .info-box {
+            background: #f4faf2;
+            border-radius: 24px;
+            padding: 18px;
+            margin: 20px 0 16px;
+            border-left: 4px solid #75b58b;
+        }
+        .guardian-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #256f42;
+            word-break: break-all;
+            margin-top: 8px;
+        }
+        .small-note {
+            font-size: 0.75rem;
+            color: #78977c;
+            margin-top: 12px;
+            text-align: center;
+        }
+        .flex-btns {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        hr {
+            margin: 20px 0;
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, #cfe3d2, transparent);
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #769a7c;
+            font-size: 0.75rem;
+        }
+        .warning {
+            background: #ffe9db;
+            border-left-color: #e68a2e;
+        }
+        .badge {
+            background: #e3f2e6;
+            border-radius: 32px;
+            padding: 3px 12px;
+            font-size: 0.7rem;
+            font-weight: normal;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        .admin-panel {
+            margin-top: 35px;
+            border-top: 2px dashed #bdd4c2;
+            padding-top: 20px;
+        }
+        .admin-toggle {
+            text-align: center;
+            cursor: pointer;
+            color: #8ca88f;
+            font-size: 0.8rem;
+            margin-bottom: 12px;
+            user-select: none;
+        }
+        .admin-content {
+            display: none;
+            background: #fafcf5;
+            border-radius: 28px;
+            padding: 20px;
+            border: 1px solid #d4e2d2;
+        }
+        .admin-content.show {
+            display: block;
+        }
+        .inline-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+        .inline-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        .pwd-input {
+            max-width: 250px;
+        }
+        @media (max-width: 850px) {
+            .card {
+                padding: 20px;
+            }
+            .guardian-name {
+                font-size: 1.5rem;
+            }
+        }
+        .admin-note {
+            font-size: 12px;
+            color: #9b7e5c;
+            margin-top: 12px;
+        }
+        .info-panel {
+            background: #fef6e3;
+            border-radius: 20px;
+            padding: 16px;
+            margin-top: 16px;
+            text-align: center;
+        }
+        .login-area {
+            background: #faf9f0;
+            border-radius: 28px;
+            padding: 12px;
+            margin-bottom: 20px;
+        }
+        .teacher-info {
+            background: #e6f0e8;
+            border-radius: 40px;
+            padding: 12px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .teacher-info span {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .switch-account-btn {
+            background: #b5cfbc;
+            color: #2c553a;
+            width: auto;
+            padding: 6px 16px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="hero">
+        <h1>✨ 微光·同行 ✨</h1>
+        <div class="sub">教师匿名守护行动 · 525心理健康月</div>
+        <div class="tagline">🌱 你是一束微光，悄悄照亮另一颗星</div>
+    </div>
+
+    <div class="dashboard">
+        <!-- 左侧：普通教师功能（登录后锁定） -->
+        <div class="card">
+            <h2>🌿 我的守护行动</h2>
+            <div id="loginPanel">
+                <div class="login-area">
+                    <div class="form-group">
+                        <label>📌 年级</label>
+                        <select id="loginGrade">
+                            <option value="">-- 请选择年级 --</option>
+                            <option value="初一">初一年级</option>
+                            <option value="初二">初二年级</option>
+                            <option value="初三">初三年级</option>
+                            <option value="高一">高一年级</option>
+                            <option value="高二">高二年级</option>
+                            <option value="高三">高三年级</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>👩‍🏫 姓名</label>
+                        <select id="loginTeacher" disabled>
+                            <option value="">-- 请先选择年级 --</option>
+                        </select>
+                    </div>
+                    <button id="loginBtn">🔐 登录 / 绑定身份</button>
+                    <div class="small-note">登录后只能查看和管理自己的守护信息，无法查看他人。</div>
+                </div>
+            </div>
+
+            <div id="teacherContent" style="display: none;">
+                <div class="teacher-info">
+                    <span>当前教师：<strong id="currentTeacherName"></strong> (<span id="currentGradeName"></span>)</span>
+                    <button id="switchAccountBtn" class="switchAccountBtn secondary">🔄 切换账号（需密码）</button>
+                </div>
+                <div id="drawArea"></div>
+                <div id="recordArea"></div>
+                <div class="info-panel">
+                    💡 温馨提示：记录保存在本设备浏览器中，每位老师只能查看自己的数据。<br>
+                    如需更换教师账号，请点击上方“切换账号”并输入管理员提供的密码。
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧：微光手记（登录后显示） -->
+        <div class="card">
+            <h2>📝 微光手记</h2>
+            <div id="rightPanelPlaceholder">
+                <div class="info-panel">👈 请先在左侧登录你的账号，即可记录暖心行动与感受。</div>
+            </div>
+            <div id="rightPanelContent" style="display: none;">
+                <div id="recordHeader">
+                    <p style="margin-bottom: 12px;">守护对象：<strong id="recordGuardianName">——</strong> 
+                        <span class="badge" id="recordStatusBadge">未记录</span>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label>💡 暖心行动 (idea / 你做过的小事)</label>
+                    <textarea id="actionInput" placeholder="例：写了一张鼓励便签放在她桌上；帮忙值日；悄悄分享了自制扭扭棒小狗..." rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>💖 我的感受 / 心里话</label>
+                    <textarea id="feelingInput" placeholder="例：看到她收到纸条时的笑容，我也觉得很温暖；微光虽小，但彼此照亮..." rows="3"></textarea>
+                </div>
+                <button id="saveRecordBtn">📌 保存我的微光记录</button>
+                <div class="flex-btns">
+                    <button id="refreshRecordBtn" class="secondary">🔄 刷新我的记录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 管理员工具面板 (心理中心专用，完全独立，可查看所有教师数据) -->
+    <div class="admin-panel">
+        <div class="admin-toggle" id="adminToggle">🔧 管理员设置 (心理中心) ▼</div>
+        <div id="adminContent" class="admin-content">
+            <h3 style="margin-bottom: 15px; font-size: 1.2rem;">🗝️ 教师抽签管理 / 记录维护</h3>
+            <div class="form-group">
+                <label>管理员密码</label>
+                <input type="password" id="adminPwd" placeholder="输入密码" class="pwd-input">
+                <div class="admin-note">※ 心理中心专用，操作前需验证密码</div>
+            </div>
+            <div id="adminTools" style="display: none;">
+                <div class="inline-row">
+                    <div class="form-group">
+                        <label>年级</label>
+                        <select id="adminGrade">
+                            <option value="">-- 请选择 --</option>
+                            <option value="初一">初一年级</option>
+                            <option value="初二">初二年级</option>
+                            <option value="初三">初三年级</option>
+                            <option value="高一">高一年级</option>
+                            <option value="高二">高二年级</option>
+                            <option value="高三">高三年级</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>教师姓名</label>
+                        <select id="adminTeacher" disabled>
+                            <option value="">-- 请先选择年级 --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex-btns" style="margin-top: 16px;">
+                    <button id="adminResetBtn" class="secondary">🔄 重置抽签 (清空全部记录，可重抽)</button>
+                    <button id="adminClearMemoBtn" class="secondary">🧹 清空微光手记 (保留守护对象)</button>
+                    <button id="adminUpdateGuardianBtn" class="secondary">✏️ 修改守护对象</button>
+                </div>
+                <hr style="margin: 20px 0;">
+                <div class="form-group">
+                    <button id="adminExportBtn" class="secondary">📎 导出全体教师守护记录 (汇总数据)</button>
+                    <div class="small-note" style="margin-top: 8px;">导出的CSV文件包含所有已抽签教师的守护对象、行动、感受等信息，请心理中心妥善保管。</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        🌟 微光汇聚，星河长明 · 匿名守护，温暖同行 🌟<br>
+        活动期间可随时补充你的守护记录，525闭幕时揭晓感动瞬间。
+    </footer>
+</div>
+
+<script>
+    // ======================= 教师数据库（真实名单 初一至高三）=======================
+    const TEACHERS_DB = {
+        "初一": ["冯冲","陈永宁","何海涛","李露娟","马诺依","李建芬","马迪","计秋槭","赵子安","张林","普建扬","詹恺","杨思航","李姝璇","周黎静","桓亚文","吕文俭","茶利军","张彩云","李昆宇","宁德其","张艳婷","欧阳秀芝","张倩","邹排英","王珊珊","张隽敏","高林芬","王韵涵","王蓉","夏海蓉","张见苍","李国艺","严袁"],
+        "初二": ["查建芊艾","周露","王雨晨","何爽","姚敬平","张开航","刘会琼","何青蔓","晏和闯","梁丹","宁敏","杜银兰","赵林懿","代宣畴","蔡涌波","李娅玲","范玲英","杨家裕","余悦","繆文杰","周婕","陈卓","付鑫","廖华","李武祥","张馨","陈鹏","杨倩","左雨浓","朱映霏","吕利寒","徐玉瑛","赵紫伊"],
+        "初三": ["陈茜","刘芬","来敏","黄宁欢","聂馨","赵会仙","李雨","李薇君","付自兰","杨爱东","杨周蓉麟","张曼","袁洪静","宁显虎","杨绍华","袁敏","夏凯丽","朱琳","关文娟","樊伟","李娇","刘志茜","陈兴果","杨云芳","杨丽亚","李以坤","杨自东","谢永娜"],
+        "高一": ["崔洁","周丽","李发光","肖超超","高原","张娜","赵乾丞","王涛","孟月红","田泽亿","魏有云","李德存","杨录杏","赵海伊","刘姝含","胡德慧","黄金龙","范荣花","晏保文","任鹏","何智宁","刘涛","赵买琴","金恒月","杨维飞","肖琪","泰金成","张珂豪","童映芳","邵维毅","周青竹","张剑","程红艳","陈兴勇","冷天存","张玲","团应","刘冬梅","董广知","李汶锦","王一竹","曹楠","罗天宝","陈园","段崇林","周伟","龚琛瑾","茅薇薇","王晨","张举勇","张华","苏琳","保沛锦","李涛","马凡琳"],
+        "高二": ["寸圣甫","初海友","阳本树","侯静","林证洲","雷锦波","苏怀福","马萨莎","余世坤","马加玲","字建勋","浦宁","丁田原","廖鸿燕","汪金玲","吴景华","李思茜","李东恒","张燕","李开优","袁良英","崔艳梅","杨浩波","刘新明","段天熊","李娟","沙秋菊","董兴梅","陈艳","朱仕涛","金富芳","陈莉华","杨艳","兰正强","吴江慧","李丹月","袁红兵","李晓婷","周林翰","张磊","许雁祥","卢珊","邓柳","刘宗华"],
+        "高三": ["李勤芹","顾德荣","刘建苹","王志宇","赵祖坤","杨四六","李曦","张凌峰","阮小平","赵小飞","袁明凯","段海燕","张明雨","马荣秋","贺秋锦","龙爱平","张颖群","李芳菊","唐娟","兰小凤","刘淑萍","雍承阳","罗小勇","孙竹先","蒋冰萱","李强","刘艳","史越越","杨存珠","谢永毅","李昊羽","高映波","张丽萍","胡小莉","吴忠伟","田佳唯","钱伦建","何道芳"]
+    };
+    const ADMIN_PASSWORD = "525xinli";          // 心理中心管理员密码
+    const SWITCH_PASSWORD = "ilovesdsy";        // 教师切换账号密码（不公开，仅供管理员告知）
+
+    // ---- 通用数据操作 ----
+    function getTeachersByGrade(grade) { return TEACHERS_DB[grade] || []; }
+    function getStorageKey(grade, teacher) { return `guardian_${grade}_${teacher}`; }
+    function getTeacherRecord(grade, teacher) {
+        const raw = localStorage.getItem(getStorageKey(grade, teacher));
+        return raw ? JSON.parse(raw) : null;
+    }
+    function saveDrawResult(grade, teacher, guardian) {
+        const key = getStorageKey(grade, teacher);
+        const now = new Date().toISOString();
+        const record = { guardian, action: "", feeling: "", drawTime: now, updatedAt: now, grade };
+        localStorage.setItem(key, JSON.stringify(record));
+        return record;
+    }
+    function updateRecord(grade, teacher, action, feeling) {
+        const rec = getTeacherRecord(grade, teacher);
+        if (rec) {
+            rec.action = action;
+            rec.feeling = feeling;
+            rec.updatedAt = new Date().toISOString();
+            localStorage.setItem(getStorageKey(grade, teacher), JSON.stringify(rec));
+            return true;
+        }
+        return false;
+    }
+    function deleteRecord(grade, teacher) { localStorage.removeItem(getStorageKey(grade, teacher)); }
+    function clearMemoOnly(grade, teacher) {
+        const rec = getTeacherRecord(grade, teacher);
+        if (rec) {
+            rec.action = "";
+            rec.feeling = "";
+            rec.updatedAt = new Date().toISOString();
+            localStorage.setItem(getStorageKey(grade, teacher), JSON.stringify(rec));
+            return true;
+        }
+        return false;
+    }
+
+    // ---- 登录状态管理 ----
+    let currentGrade = null;
+    let currentTeacher = null;
+    const loginGradeSelect = document.getElementById('loginGrade');
+    const loginTeacherSelect = document.getElementById('loginTeacher');
+    const loginBtn = document.getElementById('loginBtn');
+    const loginPanel = document.getElementById('loginPanel');
+    const teacherContent = document.getElementById('teacherContent');
+    const rightPanelPlaceholder = document.getElementById('rightPanelPlaceholder');
+    const rightPanelContent = document.getElementById('rightPanelContent');
+    const currentTeacherNameSpan = document.getElementById('currentTeacherName');
+    const currentGradeNameSpan = document.getElementById('currentGradeName');
+    const switchAccountBtn = document.getElementById('switchAccountBtn');
+    const drawArea = document.getElementById('drawArea');
+    const recordGuardianNameSpan = document.getElementById('recordGuardianName');
+    const actionInput = document.getElementById('actionInput');
+    const feelingInput = document.getElementById('feelingInput');
+    const saveRecordBtn = document.getElementById('saveRecordBtn');
+    const refreshRecordBtn = document.getElementById('refreshRecordBtn');
+    const recordStatusBadge = document.getElementById('recordStatusBadge');
+
+    function updateLoginTeacherSelect() {
+        const grade = loginGradeSelect.value;
+        if (!grade || !TEACHERS_DB[grade]) {
+            loginTeacherSelect.disabled = true;
+            loginTeacherSelect.innerHTML = '<option value="">-- 请先选择年级 --</option>';
+            return;
+        }
+        let opts = '<option value="">-- 选择你的姓名 --</option>';
+        TEACHERS_DB[grade].forEach(t => opts += `<option value="${t.replace(/"/g, '&quot;')}">${t}</option>`);
+        loginTeacherSelect.innerHTML = opts;
+        loginTeacherSelect.disabled = false;
+    }
+
+    function renderTeacherUI() {
+        if (!currentGrade || !currentTeacher) return;
+        currentTeacherNameSpan.innerText = currentTeacher;
+        currentGradeNameSpan.innerText = currentGrade;
+        const record = getTeacherRecord(currentGrade, currentTeacher);
+        // 渲染抽签区域
+        if (record && record.guardian) {
+            drawArea.innerHTML = `
+                <div class="info-box">
+                    <div style="font-weight: 500;">🌟 你的守护对象</div>
+                    <div class="guardian-name">${escapeHtml(record.guardian)}</div>
+                    <div class="small-note">默默关心，不需声张。可以送一张便签、一杯热茶，或制作扭扭棒小狗悄悄送达~</div>
+                </div>
+                <div class="info-box warning" style="background:#fff4e6;">
+                    ⚠️ 你已经抽取过守护对象，不能重复抽签。<br>如需更改请联系心理中心。
+                </div>
+            `;
+            // 右侧记录区域
+            recordGuardianNameSpan.innerText = record.guardian;
+            actionInput.value = record.action || "";
+            feelingInput.value = record.feeling || "";
+            recordStatusBadge.innerText = (record.action || record.feeling) ? "已记录" : "未记录";
+            rightPanelPlaceholder.style.display = 'none';
+            rightPanelContent.style.display = 'block';
+        } else {
+            drawArea.innerHTML = `
+                <button id="doDrawBtn">🤝 抽取我要守护的同事</button>
+                <div class="small-note">点击抽取后，系统将随机分配一位同年级的同事作为守护对象（不会抽到自己）。</div>
+            `;
+            recordGuardianNameSpan.innerText = "（尚未抽取）";
+            actionInput.value = "";
+            feelingInput.value = "";
+            recordStatusBadge.innerText = "未抽取";
+            rightPanelPlaceholder.style.display = 'none';
+            rightPanelContent.style.display = 'block';
+            // 绑定抽签事件
+            const doDrawBtn = document.getElementById('doDrawBtn');
+            if (doDrawBtn) {
+                doDrawBtn.onclick = () => {
+                    if (!currentGrade || !currentTeacher) return;
+                    if (getTeacherRecord(currentGrade, currentTeacher)) {
+                        alert("已经抽取过了");
+                        renderTeacherUI();
+                        return;
+                    }
+                    const list = getTeachersByGrade(currentGrade);
+                    const candidates = list.filter(n => n !== currentTeacher);
+                    if (candidates.length === 0) {
+                        alert("同年级只有你一人？无法抽取守护对象，请联系心理中心。");
+                        return;
+                    }
+                    const guardian = candidates[Math.floor(Math.random() * candidates.length)];
+                    saveDrawResult(currentGrade, currentTeacher, guardian);
+                    renderTeacherUI();
+                    alert(`🎉 抽签完成！你的守护对象是：${guardian}\n\n默默开始你的微光行动吧~`);
+                };
+            }
+        }
+    }
+
+    function saveCurrentTeacherRecord() {
+        if (!currentGrade || !currentTeacher) return;
+        const rec = getTeacherRecord(currentGrade, currentTeacher);
+        if (!rec || !rec.guardian) {
+            alert("请先抽取守护对象");
+            return;
+        }
+        const action = actionInput.value.trim();
+        const feeling = feelingInput.value.trim();
+        updateRecord(currentGrade, currentTeacher, action, feeling);
+        recordStatusBadge.innerText = (action || feeling) ? "❤️ 已记录" : "未记录";
+        alert("记录已保存");
+    }
+
+    function refreshCurrentTeacher() {
+        if (!currentGrade || !currentTeacher) return;
+        const rec = getTeacherRecord(currentGrade, currentTeacher);
+        if (rec && rec.guardian) {
+            recordGuardianNameSpan.innerText = rec.guardian;
+            actionInput.value = rec.action || "";
+            feelingInput.value = rec.feeling || "";
+            recordStatusBadge.innerText = (rec.action || rec.feeling) ? "已记录" : "未记录";
+        } else {
+            recordGuardianNameSpan.innerText = "（尚未抽取）";
+            actionInput.value = "";
+            feelingInput.value = "";
+            recordStatusBadge.innerText = "未抽取";
+        }
+        renderTeacherUI();
+    }
+
+    function doLogin() {
+        const grade = loginGradeSelect.value;
+        const teacher = loginTeacherSelect.value;
+        if (!grade || !teacher) {
+            alert("请选择年级和姓名");
+            return;
+        }
+        if (!TEACHERS_DB[grade] || !TEACHERS_DB[grade].includes(teacher)) {
+            alert("无效的教师信息");
+            return;
+        }
+        currentGrade = grade;
+        currentTeacher = teacher;
+        // 保存登录状态
+        localStorage.setItem('microlight_login_grade', grade);
+        localStorage.setItem('microlight_login_teacher', teacher);
+        loginPanel.style.display = 'none';
+        teacherContent.style.display = 'block';
+        renderTeacherUI();
+    }
+
+    // 切换账号需要密码验证（密码 ilovesdsy）
+    function requestSwitchAccount() {
+        const pwd = prompt("切换账号需要管理员密码，请输入：");
+        if (pwd === SWITCH_PASSWORD) {
+            // 清空登录状态
+            localStorage.removeItem('microlight_login_grade');
+            localStorage.removeItem('microlight_login_teacher');
+            currentGrade = null;
+            currentTeacher = null;
+            loginPanel.style.display = 'block';
+            teacherContent.style.display = 'none';
+            rightPanelPlaceholder.style.display = 'block';
+            rightPanelContent.style.display = 'none';
+            loginGradeSelect.value = '';
+            updateLoginTeacherSelect();
+            loginTeacherSelect.value = '';
+            alert("已退出，可重新登录其他教师账号。");
+        } else {
+            alert("密码错误，无法切换账号。如需帮助请联系心理中心。");
+        }
+    }
+
+    // 检查是否已有登录状态
+    function tryAutoLogin() {
+        const savedGrade = localStorage.getItem('microlight_login_grade');
+        const savedTeacher = localStorage.getItem('microlight_login_teacher');
+        if (savedGrade && savedTeacher && TEACHERS_DB[savedGrade] && TEACHERS_DB[savedGrade].includes(savedTeacher)) {
+            currentGrade = savedGrade;
+            currentTeacher = savedTeacher;
+            loginPanel.style.display = 'none';
+            teacherContent.style.display = 'block';
+            renderTeacherUI();
+        } else {
+            // 清除无效数据
+            localStorage.removeItem('microlight_login_grade');
+            localStorage.removeItem('microlight_login_teacher');
+            loginPanel.style.display = 'block';
+            teacherContent.style.display = 'none';
+            rightPanelPlaceholder.style.display = 'block';
+            rightPanelContent.style.display = 'none';
+        }
+    }
+
+    loginGradeSelect.addEventListener('change', updateLoginTeacherSelect);
+    loginBtn.addEventListener('click', doLogin);
+    switchAccountBtn.addEventListener('click', requestSwitchAccount);
+    saveRecordBtn.addEventListener('click', saveCurrentTeacherRecord);
+    refreshRecordBtn.addEventListener('click', refreshCurrentTeacher);
+
+    // 管理员面板 (完全独立，使用密码 ADMIN_PASSWORD)
+    let adminAuthenticated = false;
+    const adminPwd = document.getElementById('adminPwd');
+    const adminGrade = document.getElementById('adminGrade');
+    const adminTeacher = document.getElementById('adminTeacher');
+    const adminToolsDiv = document.getElementById('adminTools');
+    const adminResetBtn = document.getElementById('adminResetBtn');
+    const adminClearMemoBtn = document.getElementById('adminClearMemoBtn');
+    const adminUpdateGuardianBtn = document.getElementById('adminUpdateGuardianBtn');
+    const adminExportBtn = document.getElementById('adminExportBtn');
+
+    function updateAdminTeacherSelect() {
+        const grade = adminGrade.value;
+        if (!grade || !TEACHERS_DB[grade]) {
+            adminTeacher.disabled = true;
+            adminTeacher.innerHTML = '<option value="">-- 请先选择年级 --</option>';
+            return;
+        }
+        let opts = '<option value="">-- 选择教师 --</option>';
+        TEACHERS_DB[grade].forEach(t => opts += `<option value="${t}">${t}</option>`);
+        adminTeacher.innerHTML = opts;
+        adminTeacher.disabled = false;
+    }
+    function checkAdminAuth() {
+        if (!adminAuthenticated && adminPwd.value !== ADMIN_PASSWORD) {
+            alert("密码错误，无权限操作");
+            return false;
+        }
+        adminAuthenticated = true;
+        adminToolsDiv.style.display = "block";
+        return true;
+    }
+    function resetTeacher() {
+        if (!checkAdminAuth()) return;
+        const grade = adminGrade.value, teacher = adminTeacher.value;
+        if (!grade || !teacher) { alert("请选择年级和教师"); return; }
+        if (confirm(`确定要重置 ${grade}年级 ${teacher} 的抽签记录吗？重置后该教师所有数据（守护对象、手记）将被清空，可重新抽签。`)) {
+            deleteRecord(grade, teacher);
+            alert("重置成功！");
+            if (currentGrade === grade && currentTeacher === teacher) refreshCurrentTeacher();
+        }
+    }
+    function clearMemo() {
+        if (!checkAdminAuth()) return;
+        const grade = adminGrade.value, teacher = adminTeacher.value;
+        if (!grade || !teacher) { alert("请选择年级和教师"); return; }
+        const rec = getTeacherRecord(grade, teacher);
+        if (!rec || !rec.guardian) { alert("该教师尚未抽签，无手记可清空"); return; }
+        if (confirm(`清空 ${grade}年级 ${teacher} 的微光手记（行动和感受），但保留守护对象“${rec.guardian}”，确定吗？`)) {
+            clearMemoOnly(grade, teacher);
+            alert("已清空手记");
+            if (currentGrade === grade && currentTeacher === teacher) refreshCurrentTeacher();
+        }
+    }
+    function modifyGuardian() {
+        if (!checkAdminAuth()) return;
+        const grade = adminGrade.value, teacher = adminTeacher.value;
+        if (!grade || !teacher) { alert("请选择年级和教师"); return; }
+        const newGuardian = prompt("请输入新的守护对象姓名（必须同年级教师）：");
+        if (!newGuardian) return;
+        const teacherList = getTeachersByGrade(grade);
+        if (!teacherList.includes(teacher)) { alert("教师不在名单中"); return; }
+        if (!teacherList.includes(newGuardian)) { alert(`“${newGuardian}”不在同年级教师名单中`); return; }
+        if (teacher === newGuardian) { alert("不能守护自己"); return; }
+        if (confirm(`将 ${grade}年级 ${teacher} 的守护对象改为 ${newGuardian}，原有手记将被清空。确认吗？`)) {
+            saveDrawResult(grade, teacher, newGuardian);
+            alert("修改成功！");
+            if (currentGrade === grade && currentTeacher === teacher) refreshCurrentTeacher();
+        }
+    }
+    function exportAllRecords() {
+        if (!checkAdminAuth()) return;
+        const all = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith("guardian_")) {
+                const val = localStorage.getItem(key);
+                if (val) {
+                    const rec = JSON.parse(val);
+                    const parts = key.split('_');
+                    const grade = parts[1];
+                    const teacher = parts.slice(2).join('_');
+                    all.push({年级: grade, 教师: teacher, 守护: rec.guardian, 行动: rec.action, 感受: rec.feeling, 抽签时间: rec.drawTime, 更新: rec.updatedAt});
+                }
+            }
+        }
+        if (!all.length) { alert("暂无任何教师的抽取记录"); return; }
+        const headers = ["年级","教师姓名","守护对象","暖心行动","内心感受","抽签时间","最后更新"];
+        const rows = [headers];
+        all.forEach(r => rows.push([`"${r.年级}"`,`"${r.教师}"`,`"${r.守护}"`,`"${r.行动}"`,`"${r.感受}"`,`"${r.抽签时间}"`,`"${r.更新}"`].join(",")));
+        const csvString = rows.map(row => row.join(",")).join("\n");
+        const blob = new Blob(["\uFEFF" + csvString], { type: "text/csv;charset=utf-8" });
+        const a = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        a.href = url;
+        a.download = "微光同行_全体记录.csv";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        alert("导出成功！");
+    }
+
+    adminPwd.addEventListener('input', function() {
+        if (adminPwd.value === ADMIN_PASSWORD) {
+            adminAuthenticated = true;
+            adminToolsDiv.style.display = "block";
+        } else {
+            adminAuthenticated = false;
+            adminToolsDiv.style.display = "none";
+        }
+    });
+    adminGrade.addEventListener('change', updateAdminTeacherSelect);
+    adminResetBtn.addEventListener('click', resetTeacher);
+    adminClearMemoBtn.addEventListener('click', clearMemo);
+    adminUpdateGuardianBtn.addEventListener('click', modifyGuardian);
+    adminExportBtn.addEventListener('click', exportAllRecords);
+    document.getElementById('adminToggle').addEventListener('click', () => {
+        const cont = document.getElementById('adminContent');
+        cont.classList.toggle('show');
+        if (!cont.classList.contains('show')) {
+            adminPwd.value = "";
+            adminAuthenticated = false;
+            adminToolsDiv.style.display = "none";
+        }
+    });
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    tryAutoLogin();
+</script>
+</body>
+</html>
